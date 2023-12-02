@@ -110,5 +110,6 @@ void loop() {
     // Sending data to ThingsBoard
     tb.sendTelemetryData("temperature", tempC);
     tb.sendTelemetryData("heart_rate", BPM);
+    tb.loop();
     delay(500);
 }
