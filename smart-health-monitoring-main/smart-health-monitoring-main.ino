@@ -195,6 +195,7 @@ void ThingsBoardTaskCode(void * parameter) {
     tb.sendTelemetryData("temperature_f", receivedTemp.tempF);
     tb.sendTelemetryData("heart_rate", BPM);
     tb.sendTelemetryData("heart_rate", SpO2);
+    tb.loop();
     delay(500);
   }
 }
