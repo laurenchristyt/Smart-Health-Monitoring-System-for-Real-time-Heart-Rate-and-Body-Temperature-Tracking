@@ -22,8 +22,8 @@ Zalfy Putra Rezky					    2106731453
 float BPM, SpO2;
 
 // Put your SSID & Password
-const char* ssid = "REZKY_OXY"; // Enter SSID here
-const char* password = "arjuna77"; // Enter Password here
+const char* ssid = ""; // Enter SSID here
+const char* password = ""; // Enter Password here
 
 // ThingsBoard configuration
 const char* thingsboardServer = "https://thingsboard.cloud/"; // Enter ThingsBoard server instance
