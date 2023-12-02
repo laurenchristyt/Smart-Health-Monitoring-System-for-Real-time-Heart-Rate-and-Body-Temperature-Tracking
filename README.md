@@ -2,7 +2,7 @@
 
 ## Introduction to the problem and the solution
 
-In the ever-evolving landscape of healthcare, there is a growing need for innovative and efficient solutions that empower individuals to monitor their health in real-time. Recognizing this demand, we present the "Smart Health Monitoring System for Real-Time Heart Rate and Body Temperature Tracking," an IoT project aimed at seamlessly integrating technology into personal health management.
+In the ever-evolving landscape of healthcare, there is a growing need for innovative and efficient solutions that empower individuals to monitor their health in real time. Recognizing this demand, we present the "Smart Health Monitoring System for Real-Time Heart Rate and Body Temperature Tracking," an IoT project aimed at seamlessly integrating technology into personal health management.
 
 Traditional healthcare monitoring often involves periodic visits to medical facilities, limiting the continuous tracking of vital health parameters. This approach not only poses challenges in terms of accessibility but also may lead to delayed detection of critical health issues. In light of these constraints, there is a pressing need for a solution that enables individuals to monitor their heart rate and body temperature in real-time, providing timely insights and facilitating proactive healthcare management.
 
