@@ -3,10 +3,10 @@ IoT Final Project
 Smart Health Monitoring System for Real-time Heart Rate and Body Temperature Tracking
 
 Group B3
-Lauren Christy Tanudjaja				      2106707870
-Mikhael Morris Hapataran Siallagan		2106731491
-Rafi Fauzan Wirasena				        	2106656320
-Zalfy Putra Rezky					            2106731453
+Lauren Christy Tanudjaja (2106707870)
+Mikhael Morris Hapataran Siallagan (2106731491)
+Rafi Fauzan Wirasena (2106656320)
+Zalfy Putra Rezky (2106731453)
 */
 
 #include <Wire.h>
@@ -65,7 +65,7 @@ void setup() {
     Serial.println("Hello, ESP32!");
 
     oximeterMutex = xSemaphoreCreateMutex();
-    // Membuat antrian dengan kapasitas maksimum
+    // Create a queue with maximum capacity
     tempQueue = xQueueCreate(5, sizeof(Temp));
 
     if (tempQueue == NULL) {
@@ -161,6 +161,7 @@ void ThingsBoardTaskCode(void * parameter) {
     }
     vTaskDelay(5000 / portTICK_PERIOD_MS); // delay for 5 seconds
 
+    // Receive data from MAX30100 sensor
     if (xSemaphoreTake(oximeterMutex, portMAX_DELAY)){ // Take oximeterMutex
       if (millis() - tsLastReport > REPORTING_PERIOD_MS){
         Serial.print("Heart Rate: ");
@@ -176,6 +177,7 @@ void ThingsBoardTaskCode(void * parameter) {
       vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
 
+    // Receive temperature data from queue
     Temp receivedTemp;
     if (xQueueReceive(tempQueue, &receivedTemp, portMAX_DELAY) == pdPASS) {
       if (millis() - tsLastReport > REPORTING_PERIOD_MS){
@@ -198,7 +200,7 @@ void ThingsBoardTaskCode(void * parameter) {
   }
 }
 
-
+// Read data from MAX30100 sensor
 void MAX30100SensorReading(void * parameter) {
   while(1){
     if(xSemaphoreTake(oximeterMutex, portMAX_DELAY)){
@@ -212,6 +214,7 @@ void MAX30100SensorReading(void * parameter) {
   }
 }
 
+// Read data from LM35 sensor
 void LM35SensorReading(void * parameter) {
   for(;;) {
      // Read the ADC value from sensor
@@ -223,6 +226,7 @@ void LM35SensorReading(void * parameter) {
     // convert the °C to °F
     float tempF = tempC * 9 / 5 + 32;
 
+    // Create a struct for temperature data
     Temp temp;
     temp.tempC = tempC;
     temp.tempF = tempF;
