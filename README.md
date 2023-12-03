@@ -37,10 +37,12 @@ Libraries and dependencies used:
 The source code is designed for ESP32 to read data from two sensors (MAX30100 pulse oximeter and LM35 temperature sensor) and send the data to the ThingsBoard platform over Wi-Fi. The code uses FreeRTOS tasks to handle different functionalities concurrently.
 
 The code initializes the pulse oximeter and sets a callback function to be called when a heartbeat is detected. The setup() function creates four tasks: one for reading data from the MAX30100 sensor, one for reading data from the LM35 sensor, one for managing WiFi connections, and one for sending data to ThingsBoard, which each task is pinned to a specific core of the ESP32.
-1. The WiFiTaskCode() function continuously checks the WiFi connection status and attempts to reconnect if the connection is lost.
-2. The ThingsBoardTaskCode() function connects to the ThingsBoard server, reads the heart rate and SpO2 data from the pulse oximeter, reads the temperature data from the queue, and sends the data to ThingsBoard.
-3. The MAX30100SensorReading() function continuously reads data from the pulse oximeter and updates the heart rate and SpO2 variables.
-4. The LM35SensorReading() function continuously reads data from the LM35 temperature sensor, converts the ADC value to temperature, and sends the temperature data to the queue.
+1. WiFiTaskCode(): continuously checks the WiFi connection status and attempts to reconnect if the connection is lost.
+2. ThingsBoardTaskCode(): connects to the ThingsBoard server, reads the heart rate and SpO2 data from the pulse oximeter, reads the temperature data from the queue, and sends the data to ThingsBoard.
+3. MAX30100SensorReading(): continuously reads data from the pulse oximeter and updates the heart rate and SpO2 variables.
+4. LM35SensorReading(): continuously reads data from the LM35 temperature sensor, converts the ADC value to temperature, and sends the temperature data to the queue.
+
+The program will acquire the oximeterMutex before accessing the pulse oximeter data and will release the mutex after the data has been accessed. This ensures that the pulse oximeter data is not accessed simultaneously by multiple tasks. Furthermore, the program will create a queue, each of which is a Temp struct. This queue allows the temperature data to be shared between the LM35 sensor reading task and the ThingsBoard task.
 
 ## Test results and performance evaluation
 

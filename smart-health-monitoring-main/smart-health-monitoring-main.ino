@@ -129,6 +129,7 @@ void setup() {
 }
 
 void loop() {
+  // Empty. ThingsBoard task will be executed in the background
 }
 
 void WiFiTaskCode(void * parameter) {
