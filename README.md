@@ -4,19 +4,13 @@
 
 In the ever-evolving landscape of healthcare, there is a growing need for innovative and efficient solutions that empower individuals to monitor their health in real time. Recognizing this demand, we present the "Smart Health Monitoring System for Real-Time Heart Rate and Body Temperature Tracking," an IoT project aimed at seamlessly integrating technology into personal health management.
 
-Traditional healthcare monitoring often involves periodic visits to medical facilities, limiting the continuous tracking of vital health parameters. This approach not only poses challenges in terms of accessibility but also may lead to delayed detection of critical health issues. In light of these constraints, there is a pressing need for a solution that enables individuals to monitor their heart rate and body temperature in real-time, providing timely insights and facilitating proactive healthcare management.
+This innovative system, powered by the ESP32 microcontroller, MAX30100 pulse oximeter sensor, and LM35 temperature sensor, enables continuous real-time monitoring of heart rate and body temperature. By leveraging cutting-edge technology, our solution addresses the limitations of traditional healthcare monitoring, providing timely insights for proactive health management.
 
-Our project leverages cutting-edge technology to address these challenges. The system incorporates the ESP32 microcontroller, MAX30100 pulse oximeter sensor, and LM35 temperature sensor, forming a robust framework for real-time health data acquisition. The ESP32 acts as the central processing unit, orchestrating the seamless integration of sensor data into a cohesive and informative health monitoring system.
+The MAX30100 sensor ensures accurate monitoring of heart rate and oxygen saturation levels, while the LM35 sensor captures precise body temperature data. Integrated with Thingsboard, a robust IoT platform, our system facilitates seamless data transmission and empowers users to visualize their health trends over time.
 
-The MAX30100 sensor, renowned for its accuracy and efficiency, is employed to monitor heart rate and oxygen saturation levels. Simultaneously, the LM35 sensor captures body temperature data with high precision. This amalgamation of sensors ensures comprehensive health monitoring, enabling users to gain insights into their cardiovascular health and overall well-being.
-
-To enhance user accessibility and convenience, our solution integrates with Thingsboard, a powerful IoT platform. Thingsboard serves as the bridge between the hardware components and the user interface, facilitating the seamless transmission of health data. The platform allows users to visualize their heart rate and body temperature trends over time, empowering them to make informed decisions about their health.
-
-Additionally, the user-friendly interface extends to smartphones, providing a convenient and portable means of accessing health data. Through a dedicated mobile application, users can monitor their vital signs in real-time, set personalized health goals, and receive alerts for abnormal readings. This integration with smartphones ensures that health monitoring is not confined to a specific location, enabling users to stay informed and proactive about their well-being wherever they go.
+Accessible via smartphones through a dedicated application, our user-friendly interface allows real-time monitoring, personalized health goal setting, and alerts for abnormal readings. This portability ensures users can stay informed and proactive about their well-being anytime, anywhere.
 
 ## Hardware design and implementation details
-
-The Smart Health Monitoring System for Real-time Heart Rate and Body Temperature Tracking is an intelligent monitoring system capable of tracking users' heart rate and body temperature in real-time. The project aims to provide accurate and instant vital information for personal health monitoring or medical supervision. To implement the design of this project, several hardware components are required, including the ESP32, MAX30100 sensor, and LM35 sensor.
 
 The ESP32 is used as the central component, serving as the main brain of the system. The ESP32's capabilities in managing WiFi and Bluetooth connectivity are crucial for sending data to the cloud platform or mobile application to display information to users through an interactive user interface.
 
@@ -26,10 +20,30 @@ The LM35 is an analog temperature sensor designed to measure the user's body tem
 
 Readings from the MAX30100 sensor (heart rate) and LM35 sensor (body temperature) can be displayed in real-time through the Serial Monitor in the Arduino IDE and sent over the internet to a mobile application using the Thingsboard platform. This is intended to make it easy for users to access their readings through their smartphones.
 
+## Network infrastructure
+
+The code uses the WiFi library to connect to a WiFi network and the Arduino MQTT Client library to communicate with the ThingsBoard server over MQTT. The ESP32 connects to the WiFi network and the ThingsBoard server using the following credentials: WiFi SSID, WiFi password, ThingsBoard server address, and ThingsBoard access token. The ESP32 uses the PubSubClient library to connect to the ThingsBoard server and the ArduinoHttpClient library to send HTTP requests to the ThingsBoard server. 
+
 ## Software implementation details
+
+Libraries and dependencies used:
+- [ArduinoHttpClient](https://github.com/arduino-libraries/ArduinoHttpClient) `0.5.0` by Arduino
+- [ArduinoJSON](https://arduinojson.org/?utm_source=meta&utm_medium=library.properties) `6.21.3` by Benoit Blanchon
+- [MAX30100lib](https://github.com/oxullo/Arduino-MAX30100) `1.2.1` by OXullo Intersecans
+- [PubSubClient](https://pubsubclient.knolleary.net/) `2.8.0` by Nick O'Leary
+- [TBPubSubClient](https://pubsubclient.knolleary.net/) `Important! 2.9.2` by Nick O'Leary
+- [ThingsBoardClientSDK](https://github.com/thingsboard/thingsboard-client-sdk) `0.12.0` by ThingsBoard
+
+The source code is designed for ESP32 to read data from two sensors (MAX30100 pulse oximeter and LM35 temperature sensor) and send the data to the ThingsBoard platform over Wi-Fi. The code uses FreeRTOS tasks to handle different functionalities concurrently.
+
+The code initializes the pulse oximeter and sets a callback function to be called when a heartbeat is detected. The setup() function creates four tasks: one for reading data from the MAX30100 sensor, one for reading data from the LM35 sensor, one for managing WiFi connections, and one for sending data to ThingsBoard, which each task is pinned to a specific core of the ESP32.
+1. The WiFiTaskCode() function continuously checks the WiFi connection status and attempts to reconnect if the connection is lost.
+2. The ThingsBoardTaskCode() function connects to the ThingsBoard server, reads the heart rate and SpO2 data from the pulse oximeter, reads the temperature data from the queue, and sends the data to ThingsBoard.
+3. The MAX30100SensorReading() function continuously reads data from the pulse oximeter and updates the heart rate and SpO2 variables.
+4. The LM35SensorReading() function continuously reads data from the LM35 temperature sensor, converts the ADC value to temperature, and sends the temperature data to the queue.
 
 ## Test results and performance evaluation
 
 ## Conclusion and future work
 
-THe Smart Health Monitoring System successfully integrates the ESP32, MAX30100 sensor, and LM35 sensor to provide real-time tracking of heart rate and body temperature. The ESP32 serves as the central hub, utilizing WiFi and Bluetooth for seamless data transmission to a cloud platform or mobile application, enabling users to conveniently access vital health information. The MAX30100 sensor proves versatile for heart rate and blood oxygen saturation measurement, enhancing overall system functionality. Similarly, the LM35 sensor accurately measures body temperature, contributing valuable health data. Real-time readings are accessible through the Arduino IDE Serial Monitor, while integration with the Thingsboard platform facilitates remote monitoring via a mobile application. Looking ahead, potential future enhancements include improved data visualization, an alert system for abnormal readings, integration with wearable devices, implementation of machine learning algorithms for personalized insights, and the expansion of sensor capabilities to monitor additional health parameters, collectively evolving the Smart Health Monitoring System into a comprehensive solution for personal health management and medical supervision.
+The Smart Health Monitoring System seamlessly integrates the ESP32, MAX30100 sensor, and LM35 sensor for real-time heart rate and body temperature tracking. The ESP32 acts as the central hub, using WiFi and Bluetooth for data transmission. The versatile MAX30100 sensor measures heart rate and blood oxygen saturation, while the LM35 sensor accurately measures body temperature. Real-time readings are viewable through the Arduino IDE Serial Monitor and Thingsboard platform. We hope this project could inspire other similar projects and serves as a catalyst for creating impactful and comprehensive health monitoring solutions in the future.
